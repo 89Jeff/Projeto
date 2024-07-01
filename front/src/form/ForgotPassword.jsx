@@ -1,24 +1,22 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Login.module.css';
+import styles from './ForgotPassword.module.css';
 
-const Login = () => {
+const ForgotPassword = () => {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:8080/user/confirmarlogin', {
+            const response = await fetch('http://localhost:8080/user/esqueciSenha', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: email,
-                    senha: password
+                    email: email
                 })
             });
 
@@ -27,7 +25,7 @@ const Login = () => {
             if (response.ok) {
                 const result = await response.text();
                 alert(result);
-                navigate('/home');
+                navigate('/login');
             } else {
                 const error = await response.text();
                 alert(error);
@@ -40,7 +38,7 @@ const Login = () => {
 
     return (
         <div className={styles.container}>
-            <h2>LOGIN</h2>
+            <h2>Esqueci a Senha</h2>
             <form onSubmit={handleSubmit}>
                 <label htmlFor='email'>Email:</label>
                 <input
@@ -52,24 +50,10 @@ const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                 />
-                <label htmlFor='senha'>Senha:</label>
-                <input
-                    type='password'
-                    id='senha'
-                    name='senha'
-                    placeholder='Digite sua senha'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                <button type='submit'>Entrar</button>
-                <div className={styles.links}>
-                    <p><a href='/forgot-password'>Esqueci a senha</a></p>
-                    <p><a href='/register'>Registrar</a></p>
-                </div>
+                <button type='submit'>Enviar</button>
             </form>
         </div>
     );
 };
 
-export default Login;
+export default ForgotPassword;

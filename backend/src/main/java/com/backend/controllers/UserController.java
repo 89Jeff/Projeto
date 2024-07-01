@@ -54,13 +54,9 @@ public class UserController {
     public ResponseEntity<?> confirmarLogin(@RequestBody User loginUser) {
         Optional<User> user = userServices.confirmarLogin(loginUser.getEmail(), loginUser.getSenha());
         if (user.isPresent()) {
-        // Usuário autenticado com sucesso
-        return ResponseEntity.status(HttpStatus.FOUND)
-                             .header("Location", "/home")
-                             .build();
+            return ResponseEntity.ok().body("Login bem-sucedido");
         } else {
-        // Credenciais inválidas
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
         }
     }
     

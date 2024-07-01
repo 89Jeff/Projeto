@@ -14,6 +14,7 @@ import com.backend.repositorys.UserRepository;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -79,5 +80,6 @@ public class UserService {
         }
     }
 }
+
 
 

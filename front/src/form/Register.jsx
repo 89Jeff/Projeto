@@ -1,24 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './Login.module.css';
+import styles from './Register.module.css';
 
-const Login = () => {
+const Register = () => {
+    const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [senha, setSenha] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:8080/user/confirmarlogin', {
+            const response = await fetch('http://localhost:8080/user', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    nome: nome,
                     email: email,
-                    senha: password
+                    senha: senha
                 })
             });
 
@@ -27,7 +29,7 @@ const Login = () => {
             if (response.ok) {
                 const result = await response.text();
                 alert(result);
-                navigate('/home');
+                navigate('/login');
             } else {
                 const error = await response.text();
                 alert(error);
@@ -40,8 +42,18 @@ const Login = () => {
 
     return (
         <div className={styles.container}>
-            <h2>LOGIN</h2>
+            <h2>REGISTRO</h2>
             <form onSubmit={handleSubmit}>
+                <label htmlFor='nome'>Nome:</label>
+                <input
+                    type='text'
+                    id='nome'
+                    name='nome'
+                    placeholder='Digite seu nome'
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                    required
+                />
                 <label htmlFor='email'>Email:</label>
                 <input
                     type='email'
@@ -58,18 +70,17 @@ const Login = () => {
                     id='senha'
                     name='senha'
                     placeholder='Digite sua senha'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
                     required
                 />
-                <button type='submit'>Entrar</button>
+                <button type='submit'>Registrar</button>
                 <div className={styles.links}>
-                    <p><a href='/forgot-password'>Esqueci a senha</a></p>
-                    <p><a href='/register'>Registrar</a></p>
+                    <p><a href='/login'>Já tem uma conta? Faça login</a></p>
                 </div>
             </form>
         </div>
     );
 };
 
-export default Login;
+export default Register;
